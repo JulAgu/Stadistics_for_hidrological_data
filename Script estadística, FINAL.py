@@ -1,10 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import tkinter as tk
+
 
 #Función encargada de hacer los gráficos estadísticos
 def graficos(stdr):
     print("GRÁFICA DE LA SERIE DE DATOS\n")
-    plt.rcParams["figure.figsize"] = (20, 10)
+    plt.rcParams["figure.figsize"] = (10, 10)
     plt.plot(stdr.index,stdr.Valor)
     plt.show()
     stdr.Valor.plot.hist()
@@ -15,27 +17,25 @@ def graficos(stdr):
     stdr.boxplot(column="Valor")
     plt.show()
     
-    return
-
 
 """
-resume todas las operaciones necesarias para gráficar los datos de una estación
-y hacer su estadistica descriptiva.
+Resume todas las operaciones necesarias para graficar los datos de una estación
+y hacer su estadística descriptiva.
 
 """
-#La función base del codigo se llama estadisticahidrólogica.
+#La función base del codigo se llama estadisticahidrologica.
 """
 Notas para la compresión del código: 
 
-dfd= Data frame diario.
-dfm= Data frame mensual.
-dfa= Data frame anual.
+dfd: Data frame diario.
+dfm: Data frame mensual.
+dfa: Data frame anual.
 
 """
 
-def estadisticahidrologica(est):
-    dfd = pd.read_csv(est, encoding='latin-1')
-    print("Estadistica hidrólogica para la estación " + est + "\n")
+def estadisticahidrologica(ruta):
+    dfd = pd.read_csv(ruta, encoding='latin-1')
+    print("Estadistica hidrólogica para la estación " + ruta + "\n")
     #Se aislan las columnas de interés (Fecha y valor)
     df = dfd.iloc[:,16:18]
     #Se obtiene la transpuesta del nuevo data frame
@@ -73,10 +73,15 @@ def estadisticahidrologica(est):
     print("\nEsta es la estadística descriptiva  para el Data Frame Anual\n")
     print(dfa.Valor.describe())
     
-    return
 
-estadisticahidrologica("CATAM.csv")
-estadisticahidrologica("INEM KENNEDY.csv")
+if __name__ == '__main__':
+    # Seleccionar arcvhivo .cvs 
+    ruta = tk.filedialog.askopenfilename(title='Seleccione archivo')
+    if ruta.find('.csv') != -1:
+        estadisticahidrologica(ruta)
+    else:
+        tk.messagebox.showinfo(
+            message="El archivo no es de tipo .csv", title="Error")
     
     
    
